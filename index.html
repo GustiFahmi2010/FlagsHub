@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perbandingan HP Flagship</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f2f2f2;
+      color: #000;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background: #121212;
+      color: #fff;
+    }
+    h1 {
+      text-align: center;
+    }
+    select {
+      margin: 10px;
+      padding: 8px;
+      width: 250px;
+    }
+    .comparison {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .phone-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+    body.dark .phone-card {
+      background: #1e1e1e;
+    }
+    .specs {
+      text-align: left;
+    }
+    .theme-toggle {
+      display: block;
+      margin: 0 auto 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Perbandingan HP Flagship</h1>
+  <button class="theme-toggle" onclick="toggleTheme()">Ganti Tema Gelap/Terang</button>
+
+  <div style="text-align: center;">
+    <select id="phone1" onchange="comparePhones()">
+      <option value="">Pilih HP 1</option>
+    </select>
+    <select id="phone2" onchange="comparePhones()">
+      <option value="">Pilih HP 2</option>
+    </select>
+  </div>
+
+  <div class="comparison" id="comparisonResult"></div>
+
+  <footer>Copyright © 2025 by FlagsHub</footer>
+
+  <script>
+    const phones = {
+      "Samsung Galaxy S24 Ultra": {
+        specs: {
+          Layar: "6.8\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "200+50+10+12 MP",
+          Baterai: "5000mAh"
+        }
+      },
+      "iPhone 15 Pro Max": {
+        specs: {
+          Layar: "6.7\" OLED 120Hz",
+          Chipset: "Apple A17 Pro",
+          RAM: "8GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "48+12+12 MP",
+          Baterai: "4422mAh"
+        }
+      },
+      "Xiaomi 14 Ultra": {
+        specs: {
+          Layar: "6.73\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+50+50+50 MP",
+          Baterai: "5000mAh"
+        }
+      },
+      "ASUS ROG Phone 8 Pro": {
+        specs: {
+          Layar: "6.78\" AMOLED 165Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "16GB",
+          Storage: "512GB",
+          Kamera: "50+13+32 MP",
+          Baterai: "5500mAh"
+        }
+      },
+      "OnePlus 12": {
+        specs: {
+          Layar: "6.82\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB",
+          Kamera: "50+64+48 MP",
+          Baterai: "5400mAh"
+        }
+      },
+      "Sony Xperia 1 VI": {
+        specs: {
+          Layar: "6.5\" OLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB",
+          Storage: "256GB/512GB",
+          Kamera: "48+12+12 MP",
+          Baterai: "5000mAh"
+        }
+      },
+      "Google Pixel 8 Pro": {
+        specs: {
+          Layar: "6.7\" LTPO OLED 120Hz",
+          Chipset: "Google Tensor G3",
+          RAM: "12GB",
+          Storage: "128GB/256GB/512GB/1TB",
+          Kamera: "50+48+48 MP",
+          Baterai: "5050mAh"
+        }
+      },
+      "Huawei Pura 70 Ultra": {
+        specs: {
+          Layar: "6.8\" OLED 120Hz",
+          Chipset: "Kirin 9010",
+          RAM: "16GB",
+          Storage: "512GB/1TB",
+          Kamera: "50+40+50 MP",
+          Baterai: "5200mAh"
+        }
+      },
+      "Honor Magic6 Pro": {
+        specs: {
+          Layar: "6.8\" OLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+180+50 MP",
+          Baterai: "5600mAh"
+        }
+      },
+      "vivo X100 Pro": {
+        specs: {
+          Layar: "6.78\" AMOLED 120Hz",
+          Chipset: "Dimensity 9300",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+50+64 MP",
+          Baterai: "5400mAh"
+        }
+      },
+      "Realme GT5 Pro": {
+        specs: {
+          Layar: "6.78\" AMOLED 144Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+8+50 MP",
+          Baterai: "5400mAh"
+        }
+      },
+      "ZTE nubia Z60 Ultra": {
+        specs: {
+          Layar: "6.8\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+64+50 MP",
+          Baterai: "6000mAh"
+        }
+      },
+      "Motorola Edge 50 Ultra": {
+        specs: {
+          Layar: "6.7\" P-OLED 144Hz",
+          Chipset: "Snapdragon 8s Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "512GB/1TB",
+          Kamera: "50+50+64 MP",
+          Baterai: "4500mAh"
+        }
+      },
+      "Meizu 21 Pro": {
+        specs: {
+          Layar: "6.79\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+13+10 MP",
+          Baterai: "5050mAh"
+        }
+      },
+      "Red Magic 9 Pro+": {
+        specs: {
+          Layar: "6.8\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "16GB",
+          Storage: "512GB",
+          Kamera: "50+50 MP",
+          Baterai: "5500mAh"
+        }
+      },
+      "Sharp Aquos R8 Pro": {
+        specs: {
+          Layar: "6.6\" Pro IGZO OLED",
+          Chipset: "Snapdragon 8 Gen 2",
+          RAM: "12GB",
+          Storage: "256GB",
+          Kamera: "47MP 1\" sensor",
+          Baterai: "5000mAh"
+        }
+      },
+      "vivo X Fold3 Pro": {
+        specs: {
+          Layar: "8.03\" Foldable LTPO OLED",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "16GB",
+          Storage: "512GB/1TB",
+          Kamera: "50+64+50 MP",
+          Baterai: "5700mAh"
+        }
+      },
+      "Oppo Find X7 Ultra": {
+        specs: {
+          Layar: "6.82\" AMOLED 120Hz",
+          Chipset: "Snapdragon 8 Gen 3",
+          RAM: "12GB/16GB",
+          Storage: "256GB/512GB/1TB",
+          Kamera: "50+50+50+50 MP",
+          Baterai: "5000mAh"
+        }
+      },
+      "Infinix Zero Ultra": {
+        specs: {
+          Layar: "6.8\" AMOLED 120Hz",
+          Chipset: "Dimensity 920",
+          RAM: "8GB",
+          Storage: "256GB",
+          Kamera: "200+13+2 MP",
+          Baterai: "4500mAh"
+        }
+      },
+      "Tecno Phantom V Flip": {
+        specs: {
+          Layar: "6.9\" Foldable AMOLED",
+          Chipset: "Dimensity 8050",
+          RAM: "8GB",
+          Storage: "256GB",
+          Kamera: "64+13 MP",
+          Baterai: "4000mAh"
+        }
+      }
+    };
+
+    const phone1 = document.getElementById("phone1");
+    const phone2 = document.getElementById("phone2");
+
+    for (let name in phones) {
+      phone1.add(new Option(name, name));
+      phone2.add(new Option(name, name));
+    }
+
+    function comparePhones() {
+      const p1 = phone1.value;
+      const p2 = phone2.value;
+      const result = document.getElementById("comparisonResult");
+      result.innerHTML = "";
+
+      if (p1 && p1 === p2) {
+        result.innerHTML = "<p style='text-align:center;color:red;'>Pilih dua HP yang berbeda.</p>";
+        return;
+      }
+
+      [p1, p2].forEach(p => {
+        if (phones[p]) {
+          const data = phones[p];
+          let specHTML = "";
+          for (let key in data.specs) {
+            specHTML += `<strong>${key}</strong>: ${data.specs[key]}<br>`;
+          }
+
+          result.innerHTML += `
+            <div class="phone-card">
+              <h2>${p}</h2>
+              <div class="specs">${specHTML}</div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+    }
+  </script>
+</body>
+</html>
